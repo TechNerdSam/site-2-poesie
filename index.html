@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Souffle Numérique - Poésie</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Playfair+Display:ital,wght@1,400;1,700&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        /*------------------------------------------------------------------
+        [ Global Styles ]
+        ------------------------------------------------------------------*/
+        :root {
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Poppins', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: #fff;
+            background-color: #000;
+            overflow: hidden; /* Important for FullPage.js */
+        }
+
+        .section {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 5%;
+        }
+        
+        .poem-container {
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px 50px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .poem-title {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .poem-line {
+            display: block; /* Each line on its own row */
+            opacity: 0; /* For staggered animation */
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .granim-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        /*------------------------------------------------------------------
+        [ Section 1: Hero ]
+        ------------------------------------------------------------------*/
+        #section0 {
+            background-color: #121212;
+        }
+        
+        #three-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            z-index: 2;
+            position: relative;
+            text-shadow: 0px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 6rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            opacity: 0; /* For animation */
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            opacity: 0; /* For animation */
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            color: #fff;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /*------------------------------------------------------------------
+        [ Poèmes Stylisés ]
+        ------------------------------------------------------------------*/
+        #section2 .poem-text { /* Ballade */
+            font-style: italic;
+        }
+        
+        #section3 .poem-text { /* Acrostiche */
+           font-family: var(--font-mono);
+           font-size: 1.1rem;
+        }
+        .acrostiche-letter {
+            font-weight: 700;
+            color: #ff8a8a;
+        }
+
+        #section4 .poem-text { /* Prose */
+            text-align: left;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /*------------------------------------------------------------------
+        [ Section Final: Footer ]
+        ------------------------------------------------------------------*/
+        #section-final {
+            background-color: #1a1a1a;
+        }
+        .footer-content h2 {
+            font-family: var(--font-serif);
+            font-size: 4rem;
+            opacity: 0;
+        }
+        .footer-content p {
+            font-size: 1.2rem;
+            opacity: 0;
+            font-family: var(--font-mono);
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="fullpage">
+    <div class="section" id="section0">
+        <div id="three-canvas"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Souffle<br>Numérique</h1>
+            <p class="hero-subtitle">Une exploration poétique interactive</p>
+        </div>
+        <div class="scroll-down">Scroll</div>
+    </div>
+
+    <div class="section" id="section1">
+        <canvas class="granim-canvas" id="granim-canvas-rooftop"></canvas>
+        <div class="poem-container">
+            <h2 class="poem-title">Rooftop</h2>
+            <p class="poem-text">
+                <span class="poem-line">Le soir descend, caresse de velours,</span>
+                <span class="poem-line">Sur les toits de la ville qui s'endort.</span>
+                <span class="poem-line">Le ciel s'embrase en ultimes décors,</span>
+                <span class="poem-line">Et le temps suspend son rapide cours.</span>
+                <br>
+                <span class="poem-line">Dans ma main, une coupe au frais contour,</span>
+                <span class="poem-line">Où danse un cocktail, délicat trésor.</span>
+                <span class="poem-line">Le soleil mourant nous offre son or,</span>
+                <span class="poem-line">Fin d'un chapitre, fin d'un simple jour.</span>
+                <br>
+                <span class="poem-line">Nul besoin de mots, le silence est roi,</span>
+                <span class="poem-line">Seul le murmure du vent sur le toit</span>
+                <span class="poem-line">Accompagne ce spectacle divin.</span>
+                <br>
+                <span class="poem-line">Ce moment parfait, gravé dans ma mémoire,</span>
+                <span class="poem-line">Est un refuge contre le désespoir,</span>
+                <span class="poem-line">Une promesse d'un plus doux lendemain.</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="section" id="section2">
+        <canvas class="granim-canvas" id="granim-canvas-scroll"></canvas>
+        <div class="poem-container">
+            <h2 class="poem-title">Scroll Infini</h2>
+            <p class="poem-text">
+                <span class="poem-line">La lune est haute, la chambre est noire,</span>
+                <span class="poem-line">Mon lit m'accueille pour la nuit,</span>
+                <span class="poem-line">Mais sous mes doigts, la même histoire,</span>
+                <span class="poem-line">Un flot d'images qui me fuit.</span>
+                <span class="poem-line">Je cherche en vain le réconfort,</span>
+                <span class="poem-line">Dans ce défilé sans effort,</span>
+                <span class="poem-line">Qui vole mon repos si précieux,</span>
+                <span class="poem-line"><i>Je vois ma fatigue et la méprise.</i></span>
+                <br>
+                <span class="poem-line">Il faudrait juste y croire,</span>
+                <span class="poem-line">Éteindre cette lueur qui luit,</span>
+                <span class="poem-line">Retrouver le fil de mon histoire,</span>
+                <span class="poem-line">Avant que l'aube ne soit ici.</span>
+                <span class="poem-line">Mais l'écran froid est le plus fort,</span>
+                <span class="poem-line">Il me maintient dans son port,</span>
+                <span class="poem-line">Sous son flot vain et captieux,</span>
+                <span class="poem-line"><i>Prince, mon esprit est à l'agonie,</i></span>
+                <span class="poem-line"><i>Prisonnier de cette douce emprise.</i></span>
+                <span class="poem-line"><i>Face à cette fausse cérémonie,</i></span>
+                <span class="poem-line"><i>Je vois ma fatigue et la méprise.</i></span>
+            </p>
+        </div>
+    </div>
+    
+    <div class="section" id="section3">
+        <canvas class="granim-canvas" id="granim-canvas-battery"></canvas>
+        <div class="poem-container">
+            <h2 class="poem-title">Batterie Faible</h2>
+            <p class="poem-text">
+                <span class="poem-line"><span class="acrostiche-letter">B</span>ientôt, le noir total, le grand vide.</span>
+                <span class="poem-line"><span class="acrostiche-letter">A</span>ngoisse pure, mon cœur devient aride.</span>
+                <span class="poem-line"><span class="acrostiche-letter">T</span>out s'effacera, les plans, les contacts.</span>
+                <span class="poem-line"><span class="acrostiche-letter">T</span>el un fil fragile, le lien se rétracte.</span>
+                <span class="poem-line"><span class="acrostiche-letter">E</span>ncore un pourcent, une dernière chance.</span>
+                <span class="poem-line"><span class="acrostiche-letter">R</span>etrouver le courant, rompre le silence.</span>
+                <span class="poem-line"><span class="acrostiche-letter">I</span>solé du monde, une peur si vive.</span>
+                <span class="poem-line"><span class="acrostiche-letter">E</span>st-ce que quelqu'un près de moi arrive ?</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="section" id="section4">
+        <canvas class="granim-canvas" id="granim-canvas-coffee"></canvas>
+        <div class="poem-container">
+            <h2 class="poem-title">Slow Coffee</h2>
+            <p class="poem-text">
+                <span class="poem-line">Le matin se lève à peine. Dans le silence de la cuisine, le rituel commence. Le sac de grains, ouvert, libère un parfum de terre et de promesse.</span>
+                <span class="poem-line">Je pèse les grains. Précision. C'est une cérémonie, pas une corvée.</span>
+                <span class="poem-line">Le moulin grince, une musique grave et rassurante qui brise le sommeil. La poudre obtenue est une poussière sombre et riche, la matière première du réveil.</span>
+                <span class="poem-line">L'eau frémit, elle n'ose pas bouillir. Juste à la bonne température, elle attend.</span>
+                <span class="poem-line">La verser est une danse. Lentement, en cercles concentriques sur la mouture dans le filtre. La première coulée fait gonfler le café, il respire, il s'éveille. Une odeur profonde monte, chocolatée, presque florale.</span>
+                <span class="poem-line">Goutte à goutte, le liquide noir et précieux se forme dans la carafe. C'est la patience récompensée, l'art de ne pas brusquer les choses.</span>
+                <span class="poem-line">Ce n'est pas juste du café. C'est le temps que l'on s'accorde, la première victoire douce de la journée.</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="section" id="section-final">
+        <div class="footer-content">
+            <h2>Fin</h2>
+            <p>Conçu avec passion par un Nerd créatif numérique.<br>Développé par Samyn-Antoy ABASSE</p>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.2/fullpage.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/granim/2.0.0/granim.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    
+    // --- 1. INITIALISATION DE FULLPAGE.JS ---
+    $('#fullpage').fullpage({
+        licenseKey: 'gplv3-license',
+        navigation: true,
+        navigationPosition: 'right',
+        scrollingSpeed: 1000,
+        
+        afterLoad: function(origin, destination, direction){
+            const animators = {
+                0: animateHero,
+                1: () => animatePoem('#section1 .poem-line'),
+                2: () => animatePoem('#section2 .poem-line'),
+                3: () => animatePoem('#section3 .poem-line'),
+                4: () => animatePoem('#section4 .poem-line', 300),
+                5: animateFooter
+            };
+            if (animators[destination.index]) {
+                animators[destination.index]();
+            }
+        },
+        
+        onLeave: function(origin, destination, direction){
+            const resetters = {
+                0: resetHero,
+                1: () => resetPoem('#section1 .poem-line'),
+                2: () => resetPoem('#section2 .poem-line'),
+                3: () => resetPoem('#section3 .poem-line'),
+                4: () => resetPoem('#section4 .poem-line'),
+                5: resetFooter
+            };
+            if (resetters[origin.index]) {
+                resetters[origin.index]();
+            }
+        }
+    });
+
+    // --- 2. FONCTIONS D'ANIMATION (ANIME.JS) ---
+    function animateHero() {
+        anime.timeline({ easing: 'easeOutExpo' })
+            .add({ targets: '.hero-title', opacity: [0, 1], translateY: [-50, 0], duration: 1200 })
+            .add({ targets: '.hero-subtitle', opacity: [0, 1], translateY: [-20, 0], duration: 800 }, '-=800');
+    }
+    function resetHero() {
+        anime({ targets: '.hero-title, .hero-subtitle', opacity: 0 });
+    }
+
+    function animatePoem(target, staggerDelay = 100) {
+        anime({
+            targets: target,
+            opacity: [0, 1],
+            translateY: [20, 0],
+            delay: anime.stagger(staggerDelay, {start: 300}),
+            easing: 'easeInOutQuad'
+        });
+    }
+    function resetPoem(target) {
+        anime({ targets: target, opacity: 0, translateY: 20, duration: 0 });
+    }
+    
+    function animateFooter() {
+        anime.timeline({ easing: 'easeOutExpo' })
+            .add({ targets: '#section-final h2', opacity: [0, 1], translateY: [-30, 0], duration: 1000 })
+            .add({ targets: '#section-final p', opacity: [0, 1], translateY: [-20, 0], duration: 800 }, '-=500');
+    }
+    function resetFooter() {
+        anime({ targets: '#section-final h2, #section-final p', opacity: 0 });
+    }
+
+    // --- 3. INITIALISATION DE GRANIM.JS ---
+    // Rooftop (Sunset)
+    new Granim({
+        element: '#granim-canvas-rooftop', direction: 'diagonal', isPausedWhenNotInView: true,
+        states: { "default-state": { gradients: [['#ff8c52', '#f9a8d4'], ['#a855f7', '#ec4899']], transitionSpeed: 7000 }}
+    });
+    // Scroll (Digital Night)
+    new Granim({
+        element: '#granim-canvas-scroll', direction: 'radial', isPausedWhenNotInView: true,
+        states: { "default-state": { gradients: [['#0f172a', '#1e293b'], ['#3b82f6', '#020617']], transitionSpeed: 6000 }}
+    });
+    // Battery (Anxiety)
+    new Granim({
+        element: '#granim-canvas-battery', direction: 'left-right', isPausedWhenNotInView: true,
+        states: { "default-state": { gradients: [['#4b5563', '#1f2937'], ['#374151', '#111827']], transitionSpeed: 2000 }}
+    });
+    // Coffee (Morning)
+    new Granim({
+        element: '#granim-canvas-coffee', direction: 'diagonal', isPausedWhenNotInView: true,
+        states: { "default-state": { gradients: [['#d2c4b5', '#a1887f'], ['#795548', '#eaddd7']], transitionSpeed: 8000 }}
+    });
+
+    // --- 4. INITIALISATION DE THREE.JS ---
+    let scene, camera, renderer, particles;
+    let mouseX = 0, mouseY = 0;
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+
+    function initThree() {
+        const container = document.getElementById('three-canvas');
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+        camera.position.z = 1000;
+
+        const particleCount = 5000;
+        const particlesGeometry = new THREE.BufferGeometry();
+        const posArray = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 2000;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        
+        const particleMaterial = new THREE.PointsMaterial({ size: 1.5, color: 0x555555, transparent: true, blending: THREE.AdditiveBlending });
+        particles = new THREE.Points(particlesGeometry, particleMaterial);
+        scene.add(particles);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);
+        container.appendChild(renderer.domElement);
+
+        document.addEventListener('mousemove', onDocumentMouseMove, false);
+        window.addEventListener('resize', onWindowResize, false);
+    }
+
+    function animateThree() {
+        requestAnimationFrame(animateThree);
+        renderThree();
+    }
+
+    function renderThree() {
+        camera.position.x += (mouseX - camera.position.x) * 0.05;
+        camera.position.y += (-mouseY - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+        particles.rotation.x = Date.now() * 0.00002;
+        particles.rotation.y = Date.now() * 0.00002;
+        renderer.render(scene, camera);
+    }
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function onDocumentMouseMove(event) {
+        mouseX = (event.clientX - windowHalfX) / 2;
+        mouseY = (event.clientY - windowHalfY) / 2;
+    }
+
+    // Lancer les scripts
+    initThree();
+    animateThree();
+    animateHero();
+});
+</script>
+
+</body>
+</html>
