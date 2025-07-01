@@ -238,6 +238,22 @@
             </div>
         </div>
 
+
+    <div class="section" id="section5">
+        <canvas class="granim-canvas" id="granim-canvas-section5"></canvas>
+        <div class="poem-container">
+            <h2 class="poem-title">Le travail laborieux de l'entrepreneur compatissant</h2>
+            <p class="poem-text">
+                    <span class="poem-line">Dure est le travail laborieux de l'entrepreneur</span>
+                    <span class="poem-line">Pourtant son salaire est réjouissant et intéressant</span>
+                    <span class="poem-line">Une quête de vie pleine de rebondissements et de challenges</span>
+                    <span class="poem-line">A chaque victoire il célèbre et à chaque défaite il célèbre encore</span>
+                    <span class="poem-line">Car tous retour de son business est une leçon</span>
+                    <span class="poem-line">Tel est le business, le travail laborieux de l'entrepreneur compatissant.</span>
+                </p>
+            </div>
+        </div>
+
     <div class="section" id="section-final">
         <div class="footer-content">
             <h2>Fin</h2>
@@ -271,7 +287,8 @@ $(document).ready(function() {
                 2: () => animatePoem('#section2 .poem-line'),
                 3: () => animatePoem('#section3 .poem-line'),
                 4: () => animatePoem('#section4 .poem-line', 300),
-                5: animateFooter
+                5: () => animatePoem('#section5 .poem-line'),
+                6: animateFooter
             };
             if (animators[destination.index]) {
                 animators[destination.index]();
@@ -285,7 +302,8 @@ $(document).ready(function() {
                 2: () => resetPoem('#section2 .poem-line'),
                 3: () => resetPoem('#section3 .poem-line'),
                 4: () => resetPoem('#section4 .poem-line'),
-                5: resetFooter
+                5: () => resetPoem('#section5 .poem-line'),
+                6: resetFooter
             };
             if (resetters[origin.index]) {
                 resetters[origin.index]();
@@ -345,6 +363,11 @@ $(document).ready(function() {
     new Granim({
         element: '#granim-canvas-coffee', direction: 'diagonal', isPausedWhenNotInView: true,
         states: { "default-state": { gradients: [['#EE9CA7', '#FFDDE1'], ['#C33764', '#1D2671']], transitionSpeed: 8000 }}
+    });
+
+    new Granim({
+        element: '#granim-canvas-section5', direction: 'diagonal', isPausedWhenNotInView: true,
+        states: { "default-state": { gradients: [['#8BC34A', '#CDDC39'], ['#4CAF50', '#8BC34A']], transitionSpeed: 6500 }}
     });
 
     // --- 4. INITIALISATION DE THREE.JS ---
