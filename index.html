@@ -156,6 +156,62 @@
             font-family: var(--font-mono);
         }
 
+        /*------------------------------------------------------------------
+        [ Responsive Design (Media Queries) ]
+        ------------------------------------------------------------------*/
+        /* Adjustments for Tablets (screens up to 992px) */
+        @media (max-width: 992px) {
+            .section {
+                padding: 3%;
+            }
+            .hero-title {
+                font-size: 5rem;
+            }
+            .poem-container {
+                max-width: 90%; /* Increase width usage on smaller screens */
+                padding: 30px;
+            }
+            .poem-title {
+                font-size: 2rem;
+            }
+            #section-final h2 {
+                font-size: 3rem;
+            }
+        }
+
+        /* Adjustments for Mobile (screens up to 768px) */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3.5rem;
+                letter-spacing: 1px;
+            }
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            .poem-container {
+                max-width: 95%;
+                padding: 20px 15px; /* Reduced padding for mobile */
+            }
+            .poem-title {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            .poem-text, #section3 .poem-text, #section4 .poem-text { 
+                font-size: 1rem; /* Base poem font size */
+                line-height: 1.6;
+            }
+            .scroll-down {
+                font-size: 0.7rem;
+                bottom: 15px;
+            }
+            #section-final h2 {
+                font-size: 2.5rem;
+            }
+            #section-final p {
+                font-size: 1rem;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -279,6 +335,8 @@ $(document).ready(function() {
         navigation: true,
         navigationPosition: 'right',
         scrollingSpeed: 1000,
+        // Amélioration UX/Responsive : passe au défilement normal sur les écrans plus petits (tablettes et mobiles)
+        responsiveWidth: 992,
         
         afterLoad: function(origin, destination, direction){
             const animators = {
